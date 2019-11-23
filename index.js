@@ -8,20 +8,31 @@ const usuarios = [{
         nome: 'Ana da Web',
         email: 'fsafha@gmauk,ciom',
         idade: 23,
+        perfil_id: 1
 
     }, {
         id: 2,
         nome: 'Rafa',
         email: 'dad@gmauadak,ciaom',
         idade: 25,
-
+        perfil_id: 2
     },
     {
         id: 3,
         nome: 'Web',
         email: 'sdf@gmaukaa,cioam',
         idade: 26,
+        perfil_id: 1
+    }
+]
 
+const perfis = [{
+        id: 1,
+        nome: 'Comum'
+    },
+    {
+        id: 2,
+        nome: 'Administrador'
     }
 ]
 
@@ -30,12 +41,18 @@ const typeDefs = gql `
     scalar Date
 
     type Usuario {
-        id: ID
+        id: Int
         nome: String!
         email: String!
         idade: Int
         salario: Float
         vip: Boolean
+        perfil_id: Int
+    }
+
+    type Perfil {
+        id: Int
+        nome: String
     }
 
     type Produto {
@@ -53,6 +70,9 @@ const typeDefs = gql `
         produtoEmDestaque: Produto
         numerosMegaSena: [Int!]!
         usuarios: [Usuario]
+        usuario(id: Int): Usuario
+        perfis: [Perfil]
+        perfil(id: Int): Perfil
     }
 `
 
@@ -100,6 +120,23 @@ const resolvers = {
         },
         usuarios() {
             return usuarios;
+        },
+        usuario(_, {
+            id
+        }) {
+            const user = usuarios.find(e => e.id === id);
+
+            return user ? user : null;
+        },
+        perfis() {
+            return perfis;
+        },
+        perfil(_, {
+            id
+        }) {
+            const perfil = perfis.find(e => e.id === id);
+
+            return perfil ? perfil : null
         }
     }
 }
